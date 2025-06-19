@@ -4,13 +4,12 @@ import { notFound } from 'next/navigation';
 import BackButton from '@/components/BackButton';
 import { Metadata } from 'next';
 
-type MovieDetailsPageProps = {
+// ✅ Correct typing for generateMetadata
+export async function generateMetadata({
+  params,
+}: {
   params: { id: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
-};
-
-// Optional: Generate metadata for SEO
-export async function generateMetadata({ params }: MovieDetailsPageProps): Promise<Metadata> {
+}): Promise<Metadata> {
   const movie = await getMovieDetails(params.id);
 
   return {
@@ -19,7 +18,12 @@ export async function generateMetadata({ params }: MovieDetailsPageProps): Promi
   };
 }
 
-export default async function MovieDetailsPage({ params }: MovieDetailsPageProps) {
+// ✅ Correct typing for the main component
+export default async function MovieDetailsPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const movie = await getMovieDetails(params.id);
 
   if (!movie) return notFound();
