@@ -2,27 +2,36 @@ import { getMovieDetails, getImageUrl } from '@/services/tmdb';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import BackButton from '@/components/BackButton';
+import { Metadata } from 'next';
 
-interface MovieDetailsPageProps {
-  params: {
-    id: string;
+type MovieDetailsPageProps = {
+  params: { id: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
+};
+
+// Optional: Generate metadata for SEO
+export async function generateMetadata({ params }: MovieDetailsPageProps): Promise<Metadata> {
+  const movie = await getMovieDetails(params.id);
+
+  return {
+    title: movie?.title || 'Movie Details',
+    description: movie?.overview || 'Movie overview and information.',
   };
-  searchParams?: Record<string, string | string[] | undefined>;
 }
 
 export default async function MovieDetailsPage({ params }: MovieDetailsPageProps) {
   const movie = await getMovieDetails(params.id);
 
-  if (!movie) {
-    return notFound();
-  }
+  if (!movie) return notFound();
 
   return (
     <main className="container mx-auto px-4 py-8">
       <div className="mb-6">
         <BackButton />
       </div>
+
       <div className="flex flex-col md:flex-row gap-8">
+        {/* Poster */}
         <div className="w-full md:w-1/3">
           <div className="relative h-96 rounded-lg overflow-hidden">
             <Image
@@ -34,8 +43,11 @@ export default async function MovieDetailsPage({ params }: MovieDetailsPageProps
             />
           </div>
         </div>
+
+        {/* Details */}
         <div className="w-full md:w-2/3">
           <h1 className="text-3xl font-bold mb-2">{movie.title}</h1>
+
           <div className="flex items-center gap-4 mb-4">
             <span className="bg-yellow-400 text-black px-3 py-1 rounded-full font-bold">
               {movie.vote_average.toFixed(1)}
@@ -43,10 +55,12 @@ export default async function MovieDetailsPage({ params }: MovieDetailsPageProps
             <span>{new Date(movie.release_date).getFullYear()}</span>
             <span>{movie.runtime} minutes</span>
           </div>
+
           <div className="mb-6">
             <h2 className="text-xl font-semibold mb-2">Overview</h2>
             <p className="text-gray-700">{movie.overview}</p>
           </div>
+
           <div className="mb-6">
             <h2 className="text-xl font-semibold mb-2">Genres</h2>
             <div className="flex flex-wrap gap-2">
@@ -57,6 +71,7 @@ export default async function MovieDetailsPage({ params }: MovieDetailsPageProps
               ))}
             </div>
           </div>
+
           {movie.videos?.results?.length > 0 && (
             <div className="mb-6">
               <h2 className="text-xl font-semibold mb-2">Trailer</h2>
