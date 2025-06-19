@@ -7,6 +7,7 @@ interface MovieDetailsPageProps {
   params: {
     id: string;
   };
+  searchParams?: Record<string, string | string[] | undefined>;
 }
 
 export default async function MovieDetailsPage({ params }: MovieDetailsPageProps) {
@@ -18,7 +19,7 @@ export default async function MovieDetailsPage({ params }: MovieDetailsPageProps
 
   return (
     <main className="container mx-auto px-4 py-8">
-       <div className="mb-6">
+      <div className="mb-6">
         <BackButton />
       </div>
       <div className="flex flex-col md:flex-row gap-8">
