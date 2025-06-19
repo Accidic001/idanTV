@@ -2,12 +2,22 @@ import { fetchPopularMovies } from '@/services/tmdb';
 import MovieCard from '@/components/MovieCard';
 import SearchBar from '@/components/SearchBar';
 
-// Define or import the Movie type
-type Movie = {
+interface Movie {
   id: number;
-  // Add other properties as needed, e.g. title, poster_path, etc.
-  [key: string]: any;
-};
+  title: string;
+  poster_path: string | null;
+  backdrop_path: string | null;
+  overview: string;
+  release_date: string;
+  vote_average: number;
+  vote_count: number;
+  adult: boolean;
+  genre_ids: number[];
+  original_language: string;
+  original_title: string;
+  popularity: number;
+  video: boolean;
+}
 
 export default async function Home() {
   const movies: Movie[] = await fetchPopularMovies();
