@@ -3,7 +3,7 @@ import SearchResults from '@/components/SearchResults';
 import BackButton from '@/components/BackButton';
 
 interface SearchPageProps {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
+  searchParams: Record<string, string | string[] | undefined>;
 }
 
 export default function SearchPage(props: SearchPageProps) {
@@ -13,7 +13,6 @@ export default function SearchPage(props: SearchPageProps) {
         <BackButton />
       </div>
       <Suspense fallback={<div>Loading search results...</div>}>
-       
         <SearchResults {...props} />
       </Suspense>
     </main>
