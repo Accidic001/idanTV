@@ -2,9 +2,7 @@ import { Suspense } from 'react';
 import SearchResults from '@/components/SearchResults';
 import BackButton from '@/components/BackButton';
 
-interface SearchPageProps {
-  searchParams: Record<string, string | string[] | undefined>;
-}
+
 
 interface PageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
