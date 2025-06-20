@@ -20,7 +20,14 @@ interface Movie {
 }
 
 export default async function Home() {
-  const movies: Movie[] = await fetchPopularMovies();
+  let movies: Movie[] = [];
+
+  try {
+    movies = await fetchPopularMovies();
+  } catch (error) {
+    console.error("Failed to fetch popular movies:", error);
+    // fallback or leave movies empty
+  }
 
   return (
     <main className="container mx-auto px-4 py-8">
@@ -29,16 +36,22 @@ export default async function Home() {
         <SearchBar />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {movies.map((movie) => (
-          <MovieCard
-            key={movie.id}
-            id={movie.id}
-            title={movie.title}
-            poster_path={movie.poster_path}
-            release_date={movie.release_date}
-            vote_average={movie.vote_average}
-          />
-        ))}
+        {movies.length > 0 ? (
+          movies.map((movie) => (
+            <MovieCard
+              key={movie.id}
+              id={movie.id}
+              title={movie.title}
+              poster_path={movie.poster_path}
+              release_date={movie.release_date}
+              vote_average={movie.vote_average}
+            />
+          ))
+        ) : (
+          <p className="col-span-full text-center text-red-500">
+            Failed to load movies. Please try again later.
+          </p>
+        )}
       </div>
     </main>
   );
