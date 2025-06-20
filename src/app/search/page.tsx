@@ -3,36 +3,39 @@ import MovieCard from '@/components/MovieCard';
 import { notFound } from 'next/navigation';
 import BackButton from '@/components/BackButton';
 
-interface Movie {
-  id: number;
-  title: string;
-  poster_path: string | null;
-  release_date: string;
-  vote_average: number;
-  // Add other properties as needed
+interface SearchPageProps {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
-interface SearchPageProps {
-  searchParams: {
-    q: string;
-  };
+type Movie = {
+  id: number;
+  title: string;
+  poster_path?: string | null;
+  overview?: string;
+  release_date?: string;
+  vote_average?: number | null;
 }
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
-  if (!searchParams.q) {
+  const resolvedSearchParams = await searchParams;
+  const queryParam = resolvedSearchParams.q;
+  const query = Array.isArray(queryParam) ? queryParam[0] : queryParam;
+
+  if (!query) {
     return notFound();
   }
 
-  const movies = await searchMovies(searchParams.q);
+  const movies = await searchMovies(query);
 
   return (
     <main className="container mx-auto px-4 py-8">
-      <div className="mb-6">
+      <div className="mb-6 ">
         <BackButton />
       </div>
-      
+
       <h1 className="text-2xl font-bold mb-6">
-        Search Results for: <span className="text-blue-600">{searchParams.q}</span>
+        Search Results for:{' '}
+        <span className="text-blue-600">{query}</span>
       </h1>
 
       {movies.length === 0 ? (
@@ -40,7 +43,14 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {movies.map((movie: Movie) => (
-            <MovieCard key={movie.id} {...movie} />
+            <MovieCard
+              key={movie.id}
+              id={movie.id}
+              title={movie.title}
+              poster_path={movie.poster_path ?? undefined}
+              release_date={movie.release_date ?? undefined}
+              vote_average={movie.vote_average ?? undefined}
+            />
           ))}
         </div>
       )}

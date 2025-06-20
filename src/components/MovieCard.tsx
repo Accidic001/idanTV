@@ -5,12 +5,18 @@ import { getImageUrl } from '@/services/tmdb';
 interface MovieCardProps {
   id: number;
   title: string;
-  poster_path: string | null;
-  release_date: string;
-  vote_average: number | null; // Updated to accept null
+  poster_path?: string | null; // Make it optional
+  release_date?: string | null; // Make it optional
+  vote_average?: number | null; // Already optional
 }
 
-export default function MovieCard({ id, title, poster_path, release_date, vote_average }: MovieCardProps) {
+export default function MovieCard({ 
+  id, 
+  title, 
+  poster_path = null, // Provide default value
+  release_date = null, // Provide default value
+  vote_average = null // Provide default value
+}: MovieCardProps) {
   // Safely handle release date display
   const releaseYear = release_date ? new Date(release_date).getFullYear() : 'N/A';
   
