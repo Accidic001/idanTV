@@ -6,14 +6,20 @@ interface SearchPageProps {
   searchParams: Record<string, string | string[] | undefined>;
 }
 
-export default function SearchPage(props: SearchPageProps) {
+interface PageProps {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}
+
+export default async function SearchPage(props: PageProps) {
+  const resolvedSearchParams = await props.searchParams;
+
   return (
     <main className="container mx-auto px-4 py-8">
       <div className="mb-6 ">
         <BackButton />
       </div>
       <Suspense fallback={<div>Loading search results...</div>}>
-        <SearchResults {...props} />
+        <SearchResults searchParams={resolvedSearchParams} />
       </Suspense>
     </main>
   );
