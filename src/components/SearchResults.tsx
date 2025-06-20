@@ -1,11 +1,9 @@
-
 import { searchMovies } from '@/services/tmdb';
 import MovieCard from '@/components/MovieCard';
 import { notFound } from 'next/navigation';
 
-
 interface SearchPageProps {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
+  searchParams: Record<string, string | string[] | undefined>;
 }
 
 type Movie = {
@@ -18,8 +16,7 @@ type Movie = {
 }
 
 export default async function SearchResults({ searchParams }: SearchPageProps) {
-  const resolvedSearchParams = await searchParams;
-  const queryParam = resolvedSearchParams.q;
+  const queryParam = searchParams.q;
   const query = Array.isArray(queryParam) ? queryParam[0] : queryParam;
 
   if (!query) {
@@ -54,4 +51,3 @@ export default async function SearchResults({ searchParams }: SearchPageProps) {
     </>
   );
 }
-
