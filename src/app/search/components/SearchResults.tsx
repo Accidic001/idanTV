@@ -1,12 +1,9 @@
+// src/app/search/components/SearchResults.tsx
 import { searchMovies } from '@/services/tmdb';
 import MovieCard from '@/components/MovieCard';
 import { Movie } from '../../../../types/movie';
 
-export default async function SearchResults({ query }: { query?: string }) {
-  if (!query) {
-    return <p className="text-center text-gray-500">Please enter a search query</p>;
-  }
-
+export default async function SearchResults({ query }: { query: string }) {
   const movies = await searchMovies(query);
   
   return movies.length === 0 ? (

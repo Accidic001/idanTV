@@ -16,10 +16,7 @@ export interface Movie {
   original_title?: string;
 }
 
-export interface PageProps {
-  params?: Record<string, string>;
-  searchParams?: Record<string, string | string[]>;
-}
+
 
 export interface MovieDetails extends Movie {
   belongs_to_collection?: null | {

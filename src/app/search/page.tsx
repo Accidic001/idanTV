@@ -4,13 +4,20 @@ import BackButton from '@/components/BackButton';
 import SearchResultsSkeleton from './components/SearchResultsSkeleton';
 import SearchResults from './components/SearchResults';
 
-interface SearchPageProps {
-  params?: Record<string, string>;
-  searchParams?: { q?: string | string[] };
-}
+// Updated type definition for Next.js 15
+type SearchPageProps = {
+  searchParams: Promise<{ q?: string | string[] }>;
+  params: Promise<{ [key: string]: string }>;
+};
 
-export default function SearchPage({ searchParams }: SearchPageProps) {
-  const query = Array.isArray(searchParams?.q) ? searchParams.q[0] : searchParams?.q;
+// Make the component async to handle Promise-based props
+export default async function SearchPage(props: SearchPageProps) {
+  // Await the searchParams Promise
+  const searchParams = await props.searchParams;
+  
+  const query = Array.isArray(searchParams.q) 
+    ? searchParams.q[0] 
+    : searchParams.q;
 
   return (
     <main className="container mx-auto px-4 py-8">
