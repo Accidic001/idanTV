@@ -100,3 +100,5 @@ export interface MovieCardProps {
   release_date?: string | null;
   vote_average?: number | null;
 }
+
+

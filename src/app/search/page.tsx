@@ -19,6 +19,8 @@ export default async function SearchPage(props: SearchPageProps) {
     ? searchParams.q[0] 
     : searchParams.q;
 
+    
+
   return (
     <main className="container mx-auto px-4 py-8">
       <div className="mb-6">
@@ -29,7 +31,8 @@ export default async function SearchPage(props: SearchPageProps) {
       </h1>
       <Suspense fallback={<SearchResultsSkeleton />}>
         {query ? <SearchResults query={query} /> : (
-          <p className="text-center text-gray-500">Enter a search term</p>
+          <p className="text-center text-gray-500 dark:text-gray-400">Enter a search term</p>
+
         )}
       </Suspense>
     </main>

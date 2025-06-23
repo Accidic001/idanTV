@@ -1,5 +1,4 @@
-
-'use client'; // Add this directive at the top
+'use client';
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -24,7 +23,7 @@ export default function MovieCard({
   const rating = vote_average !== null ? vote_average.toFixed(1) : 'N/A';
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-gray-900/30 overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-lg dark:hover:shadow-gray-900/50">
       <Link href={`/movies/${id}`} prefetch={false}>
         <div className="relative h-64">
           <Image
@@ -41,13 +40,15 @@ export default function MovieCard({
             }}
           />
         </div>
-        <div className="p-4">
-          <h3 className="text-lg font-semibold mb-1 truncate" title={title}>
+        <div className="p-4 bg-amber-50 dark:bg-gray-900 rounded-b-lg">
+          <h3 className="text-lg font-semibold mb-1 truncate text-gray-900 dark:text-white" title={title}>
             {title}
           </h3>
           <div className="flex justify-between items-center">
-            <span className="text-gray-600">{releaseYear}</span>
-            <span className="bg-yellow-400 text-black px-2 py-1 rounded text-sm font-bold">
+            <span className="text-gray-600 dark:text-gray-300">
+              {releaseYear}
+            </span>
+            <span className="bg-yellow-400 dark:bg-yellow-500 text-black dark:text-gray-900 px-2 py-1 rounded text-sm font-bold">
               {rating}
             </span>
           </div>

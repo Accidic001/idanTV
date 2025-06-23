@@ -50,7 +50,7 @@ export default async function MovieDetailsPage({ params }: MovieDetailsPageProps
             <h2 className="text-xl font-semibold mb-2">Genres</h2>
             <div className="flex flex-wrap gap-2">
               {movie.genres.map((genre: { id: number; name: string }) => (
-                <span key={genre.id} className="bg-gray-200 px-3 py-1 rounded-full text-sm">
+                <span key={genre.id} className="bg-gray-100 dark:bg-gray-600 px-3 py-1 rounded-full text-sm">
                   {genre.name}
                 </span>
               ))}
