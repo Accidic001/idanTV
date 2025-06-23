@@ -60,7 +60,8 @@ export default async function TvShowPage({ params }: Params) {
         </div>
       </main>
     );
-  } catch (error) {
+  } catch  {
     return notFound();
+    
   }
 }

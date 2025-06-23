@@ -23,7 +23,7 @@ export default function Pagination({ currentPage, totalPages, totalResults }: Pa
     const delta = 2;
     const range = [];
     const rangeWithDots = [];
-    let l;
+   
 
     for (let i = Math.max(2, currentPage - delta); 
          i <= Math.min(totalPages - 1, currentPage + delta); 

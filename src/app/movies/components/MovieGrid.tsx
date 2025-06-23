@@ -1,4 +1,4 @@
-import { getMovies, getImageUrl } from '@/services/tmdb';
+import { getMovies } from '@/services/tmdb';
 import MovieCard from './MovieCard';
 import Pagination from "@/app/movies/components/Pagination";
 
