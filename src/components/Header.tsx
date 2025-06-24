@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
@@ -7,27 +7,28 @@ import ThemeToggle from './ThemeToggle';
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
 
-  // Close mobile menu when clicking outside
+  // Close mobile menu when clicking outside or scrolling
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      if (isMobileMenuOpen && !target.closest('.mobile-menu-container')) {
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node)) {
         setIsMobileMenuOpen(false);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isMobileMenuOpen]);
-
-  // Add scroll effect
-  useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
+      setIsMobileMenuOpen(false); // Close menu on scroll
     };
+
+    document.addEventListener('mousedown', handleClickOutside);
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   const navLinks = [
@@ -37,7 +38,7 @@ export default function Header() {
   ];
 
   return (
-    <nav className={`sticky top-0 z-50 transition-all duration-300 ${
+    <header className={`sticky top-0 z-50 transition-all duration-300 ${
       isScrolled 
         ? 'bg-blue-800/95 dark:bg-gray-900/95 backdrop-blur-sm shadow-lg' 
         : 'bg-blue-700 dark:bg-gray-900'
@@ -76,7 +77,7 @@ export default function Header() {
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center space-x-4 mobile-menu-container">
+          <div className="md:hidden flex items-center space-x-4" ref={mobileMenuRef}>
             <ThemeToggle />
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -94,11 +95,14 @@ export default function Header() {
         </div>
 
         {/* Mobile Navigation Menu */}
-        <div className={`md:hidden transition-all duration-300 ease-in-out overflow-hidden ${
-          isMobileMenuOpen 
-            ? 'max-h-screen opacity-100 py-2' 
-            : 'max-h-0 opacity-0'
-        }`}>
+        <div 
+          ref={mobileMenuRef}
+          className={`md:hidden transition-all duration-300 ease-in-out overflow-hidden ${
+            isMobileMenuOpen 
+              ? 'max-h-screen opacity-100 py-2' 
+              : 'max-h-0 opacity-0'
+          }`}
+        >
           <div className="pt-2 pb-4 space-y-1 border-t border-blue-600 dark:border-gray-700">
             {navLinks.map((link) => (
               <Link
@@ -113,6 +117,6 @@ export default function Header() {
           </div>
         </div>
       </div>
-    </nav>
+    </header>
   );
 }
